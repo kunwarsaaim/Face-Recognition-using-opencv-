@@ -2,7 +2,9 @@
 # coding: utf-8
 
 # In[1]:
-
+'''
+    face detection and recognition using opencv
+'''
 
 train0 = 'H:/python/all1/Bill gates'
 train1 = 'H:/python/all1/elon musk'
@@ -16,11 +18,13 @@ import cv2
 import os
 import numpy as np
 from tqdm import tqdm
+import time
+
 
 
 # In[3]:
 
-
+#adding the classifier file 
 fcascade = cv2.CascadeClassifier(algopath)
 
 
@@ -50,7 +54,7 @@ def training_data(directory,label):
 
 # In[15]:
 
-
+#labelling the data
 t_data0 , label0 = training_data(train0,[0])
 t_data1 , label1 = training_data(train1,[1])
 
@@ -104,11 +108,16 @@ name = { 0 : "Bill Gates" , 1 : "Elon Musk"}
 
 for (x,y,w,h) in faces_rect:
     value , conf = face_recg.predict(gray_img[y:y+h,x:x+w])
+    if conf>40 and conf<100:
+        cv2.rectangle(test_img,(x,y),(x+w,y+h),(145,14,15),2)
+        cv2.putText(test_img,name[value],(x,y-5), cv2.FONT_HERSHEY_DUPLEX,1,(2,152,10),1)
+        cv2.imshow("FACE RECOGNIZER",test_img)
+
     if conf > 100:
         continue
-    cv2.rectangle(test_img,(x,y),(x+w,y+h),(145,14,15),2)
-    cv2.putText(test_img,name[value],(x,y-5), cv2.FONT_HERSHEY_DUPLEX,1,(2,152,10),1)
-    cv2.imshow("FACE RECOGNIZER",test_img)
+    # cv2.rectangle(test_img,(x,y),(x+w,y+h),(145,14,15),2)
+    # cv2.putText(test_img,name[value],(x,y-5), cv2.FONT_HERSHEY_DUPLEX,1,(2,152,10),1)
+    # cv2.imshow("FACE RECOGNIZER",test_img)
     
     cv2.waitKey(0)
     cv2.destroyAllWindows()
